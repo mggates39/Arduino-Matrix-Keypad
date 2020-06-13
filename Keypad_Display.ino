@@ -15,6 +15,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define LOCK_RELAY_PIN 10
 #define BUZZER_PIN 11
+#define OVERRIDE 12
 
 #define NOTE_G4 392
 #define NOTE_D5 587
@@ -56,6 +57,8 @@ void setup()
 
   pinMode(LOCK_RELAY_PIN, OUTPUT);
   digitalWrite(LOCK_RELAY_PIN, HIGH);
+  pinMode(OVERRIDE, INPUT_PULLUP);
+
 
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
@@ -120,6 +123,25 @@ void loop()
     }
     clearData();
     display.clearDisplay();
+  } else {
+    if (digitalRead(OVERRIDE) == LOW) {
+      display.clearDisplay();
+      display.setCursor(0, 0);
+      display.setTextSize(3); // Draw 3X-scale text
+      display.print(" Enter");
+      display.display();
+      Serial.println("Override");
+      digitalWrite(LOCK_RELAY_PIN, LOW);
+      tone(BUZZER_PIN, NOTE_D5);
+      delay(500);
+      tone(BUZZER_PIN, NOTE_G4);
+      delay(500);
+      noTone(BUZZER_PIN);
+      delay(4000);
+      digitalWrite(LOCK_RELAY_PIN, HIGH);
+      clearData();
+      display.clearDisplay();
+    }
   }
 }
 
