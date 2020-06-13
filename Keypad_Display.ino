@@ -62,8 +62,6 @@ void setup()
   display.display();
   delay(2000); // Pause for 2 seconds
 
-  display.setTextSize(1); // Draw 2X-scale text
-  display.setTextColor(SSD1306_WHITE);
   display.clearDisplay();
   display.display();
 }
@@ -71,6 +69,7 @@ void setup()
 void loop()
 {
   display.setCursor(0, 0);
+  display.setTextSize(1); // Draw normal-scale text
   display.setTextColor(SSD1306_WHITE);
   display.print(F("Enter Password:"));
   display.display();
@@ -95,7 +94,8 @@ void loop()
 
     if (!strcmp(Data, Master))
     {
-      display.print("Correct");
+      display.setTextSize(2); // Draw 2X-scale text
+      display.print("  Welcome");
       display.display();
       Serial.println("Open");
       digitalWrite(LOCK_RELAY_PIN, LOW);
@@ -109,8 +109,9 @@ void loop()
     }
     else
     {
+      display.setTextSize(2); // Draw 2X-scale text
       display.setTextColor(SSD1306_BLACK, SSD1306_WHITE);
-      display.print("Incorrect");
+      display.print("  Access  \n  Denied  ");
       display.display();
       Serial.println("Failed");
       tone(BUZZER_PIN, NOTE_C6);
