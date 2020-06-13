@@ -97,8 +97,8 @@ void loop()
 
     if (!strcmp(Data, Master))
     {
-      display.setTextSize(2); // Draw 2X-scale text
-      display.print("  Welcome");
+      display.setTextSize(3); // Draw 3X-scale text
+      display.print("Welcome");
       display.display();
       Serial.println("Open");
       digitalWrite(LOCK_RELAY_PIN, LOW);
