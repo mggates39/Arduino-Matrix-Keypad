@@ -11,7 +11,7 @@ The pass codde is hard coded in the application.
 - 1 Arduino Uno
 - 1 SSD1306 0.91" 128x32 OLED screen w/I2C 128x32
 - 1 4x4 Universial 16 Key Switch Keypad Keyboard
-- 1 JBtek 4 Channel DC 5V Relay Module 
+- 1 JBtek 2 Channel DC 5V Relay Module 
 - 1 Piezo buzzer
 - 1 Breadboard
 - 1 100 Ohm resistor, optional
@@ -39,14 +39,14 @@ Wire the Keypad to the Arduino
 
 | Enc Pin | Usage | Arduino Pin |
 | ------- | ----- | ----------- |
-| R1 | Row 1 | D2 |
-| R2 | Row 2 | D3 |
-| R3 | Row 3 | D4 |
-| R4 | Row 4 | D5 |
-| C1 | Column 1 | D6 |
-| C2 | Column 2 | D7 |
-| C3 | Column 3 | D8 |
-| C4 | Column 4 | D9 |
+| R1 | Row 1 | D9 |
+| R2 | Row 2 | D8 |
+| R3 | Row 3 | D7 |
+| R4 | Row 4 | D6 |
+| C1 | Column 1 | D5 |
+| C2 | Column 2 | D4 |
+| C3 | Column 3 | D3 |
+| C4 | Column 4 | D2 |
 
 Wire the first relay on the relay board to the Arduino
 
