@@ -60,8 +60,8 @@ Wire the buzzer to the Arduino
 
 | Enc Pin | Usage | Arduino Pin |
 | ------- | ----- | ----------- |
-| GND | Ground | GND |
-| sig | through 100 ohm resistor | D11 |
+| GND | Ground through 100 ohm resistor | GND |
+| sig | sound signal | D11 |
 
 ## References
 - Initial Keypad code came from [How to setup a keypad on an Arduino](https://www.circuitbasics.com/how-to-set-up-a-keypad-on-an-arduino/)
