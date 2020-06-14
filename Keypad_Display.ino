@@ -34,8 +34,7 @@ byte colPins[COLS] = {5, 4, 3, 2};
 
 char Data[Password_Length];
 char Master[Password_Length] = "123A456";
-byte data_count = 0, master_count = 0;
-bool Pass_is_good;
+byte data_count = 0;
 char customKey;
 
 Keypad customKeypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
