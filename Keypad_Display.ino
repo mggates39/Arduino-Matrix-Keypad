@@ -48,23 +48,27 @@ void setup()
   Serial.begin(115200);
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  // Address 0x3C for 128x32 or 0x3D for 128x64
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
-  { // Address 0x3D for 128x64
+  {
     Serial.println(F("SSD1306 allocation failed"));
     for (;;)
       ; // Don't proceed, loop forever
   }
 
+  // Setup the relay lock bin
   pinMode(LOCK_RELAY_PIN, OUTPUT);
   digitalWrite(LOCK_RELAY_PIN, HIGH);
-  pinMode(OVERRIDE, INPUT_PULLUP);
 
+  // Setup the Override button input pin
+  pinMode(OVERRIDE, INPUT_PULLUP);
 
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
   display.display();
   delay(2000); // Pause for 2 seconds
 
+  // Clear the display and show it.
   display.clearDisplay();
   display.display();
 }
@@ -97,18 +101,13 @@ void loop()
 
     if (!strcmp(Data, Master))
     {
+      // The passcode matches, so tell the user they can enter
       display.setTextSize(3); // Draw 3X-scale text
       display.print("Welcome");
       display.display();
       Serial.println("Open");
-      digitalWrite(LOCK_RELAY_PIN, LOW);
-      tone(BUZZER_PIN, NOTE_D5);
-      delay(500);
-      tone(BUZZER_PIN, NOTE_G4);
-      delay(500);
-      noTone(BUZZER_PIN);
-      delay(4000);
-      digitalWrite(LOCK_RELAY_PIN, HIGH);
+
+      openLock();
     }
     else
     {
@@ -117,32 +116,56 @@ void loop()
       display.print("  Access  \n  Denied  ");
       display.display();
       Serial.println("Failed");
+
+      // Start the annoying sound
       tone(BUZZER_PIN, NOTE_C6);
       delay(2000);
+      // And stop it now.
       noTone(BUZZER_PIN);
     }
     clearData();
     display.clearDisplay();
-  } else {
-    if (digitalRead(OVERRIDE) == LOW) {
+  }
+  else
+  {
+    if (digitalRead(OVERRIDE) == LOW)
+    {
       display.clearDisplay();
       display.setCursor(0, 0);
       display.setTextSize(3); // Draw 3X-scale text
       display.print(" Enter");
       display.display();
       Serial.println("Override");
-      digitalWrite(LOCK_RELAY_PIN, LOW);
-      tone(BUZZER_PIN, NOTE_D5);
-      delay(500);
-      tone(BUZZER_PIN, NOTE_G4);
-      delay(500);
-      noTone(BUZZER_PIN);
-      delay(4000);
-      digitalWrite(LOCK_RELAY_PIN, HIGH);
+
+      openLock();
+
       clearData();
       display.clearDisplay();
     }
   }
+}
+
+void openLock()
+{
+  // Energize the relay by driving the control pin LOW
+  digitalWrite(LOCK_RELAY_PIN, LOW);
+
+  // Play Ding for half a second
+  tone(BUZZER_PIN, NOTE_D5);
+  delay(500);
+
+  // Play Dong for half a second
+  tone(BUZZER_PIN, NOTE_G4);
+  delay(500);
+
+  // Turn off the buzxzer
+  noTone(BUZZER_PIN);
+
+  // Wait for the rest of the 5 seconds, only 4 now.
+  delay(4000);
+
+  // De-energize the relay
+  digitalWrite(LOCK_RELAY_PIN, HIGH);
 }
 
 void clearData()
